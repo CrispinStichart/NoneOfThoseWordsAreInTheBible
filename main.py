@@ -1,12 +1,14 @@
 from collections import Counter
 from enum import Enum
 
+
 class BIBLES(Enum):
     ERV = "English Revised Version"
     KJV = "King James Version"
 
     def filename(self):
         return self.name.lower() + ".txt"
+
 
 def clean_line(line: str) -> list[str]:
     cleaned_line = []
@@ -24,8 +26,9 @@ def clean_line(line: str) -> list[str]:
     return cleaned_line
 
 
-def least(counter:Counter, n: int) -> list:
+def least(counter: Counter, n: int) -> list:
     return counter.most_common()[-n:]
+
 
 def with_count_of(words: Counter, minimum: int, maximum: int) -> list:
     word_list = []
@@ -39,6 +42,7 @@ def with_count_of(words: Counter, minimum: int, maximum: int) -> list:
 def words_in_bible(words: Counter, text: str):
     cleaned_text = clean_line(text)
     return [(word, word in words) for word in cleaned_text]
+
 
 def check_text(words: Counter, text):
     words_truth = words_in_bible(words, text)
@@ -66,7 +70,6 @@ def main():
         while line := f.readline():
             words.update(clean_line(line))
 
-
     nfts = "Fox is making a blockchain animated series with Rick and Morty creator Dan Harmon to sell you NFTs"
 
     # check_text(words, nfts)
@@ -78,6 +81,8 @@ def main():
     # print(words.most_common())
 
     # print(words["slaves"])
+
+
 # def in_bible(string)
 
 if __name__ == "__main__":
