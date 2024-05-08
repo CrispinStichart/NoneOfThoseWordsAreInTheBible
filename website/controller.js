@@ -11,6 +11,10 @@ function resetInput() {
     document.getElementById("textbox").value = "";
     document.getElementById("inputContainer").hidden = false;
     document.getElementById("resultsContainer").hidden = true;
+    document.getElementById("wordsNotInBible").innerHTML = "";
+    document.getElementById("wordsInBible").innerHTML = "";
+
+
 }
 
 function checkText(text) {
@@ -61,7 +65,13 @@ function displayWords(words) {
                 word.containedInVerses.forEach(verseId => {
                     const verseItem = document.createElement('li');
                     const verse = bible.verses[verseId.index]; // Access the verse using index
-                    verseItem.innerHTML = highlightWord(verse.text, word.word);
+                    const verseIdElement = document.createElement("em")
+                    const verseTextElement = document.createElement("span")
+                    verseIdElement.textContent = verseId.toString();
+                    verseTextElement.innerHTML = highlightWord(verse.text, word.word);
+                    verseItem.appendChild(verseIdElement);
+                    verseItem.appendChild(verseTextElement);
+
                     verseList.appendChild(verseItem);
                 });
 

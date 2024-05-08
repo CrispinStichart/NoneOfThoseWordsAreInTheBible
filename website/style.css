@@ -25,9 +25,14 @@ body {
 
 }
 
+#wordsInBible em {
+    padding-right: 1em;
+}
+
 textarea {
     width: 100%;
     resize: vertical;
+    min-height: 10em;
 }
 
 a {
