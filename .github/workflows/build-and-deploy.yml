@@ -10,13 +10,12 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-
-
-
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           target-folder: NoneOfTheseWordsAreInTheBible
           repository-name: CrispinStichart/CrispinStichart.github.io
-          token: ${{ secrets.TEST }}
           folder: . # The folder the action should deploy.
+        secrets:
+          token: ${{ secrets.DEPLOY_KEY }}
+
