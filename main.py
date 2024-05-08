@@ -1,9 +1,10 @@
+import os
 from collections import Counter
 from enum import Enum
 from dataclasses import dataclass
-import json
 
 BIBLES_DIR = "bibles"
+BIBLE_WEBSITE_DIR = "website/bibles"
 
 
 class BIBLES(Enum):
@@ -33,6 +34,24 @@ class Result:
         }
 
 
+@dataclass
+class VerseId:
+    """
+    Just for the identification part of the verse, and not the full line.
+    """
+
+    book_name: str
+    chapter_num: int
+    verse_num: int
+    index: int
+
+    def __str__(self):
+        return f"{self.book_name}, {self.chapter_num}:{self.verse_num}"
+
+    def __hash__(self):
+        return hash(str(self))
+
+
 class Verse:
     """
     Note that verses are not comparable across versions, since versions differ
@@ -44,64 +63,51 @@ class Verse:
     this is only valid for a particular version.
     """
 
-    def __init__(self, book_name: str, chapter_num: int, verse_num: int, index: int):
-        self.book_name = book_name
-        self.chapter_num = chapter_num
-        self.verse_num = verse_num
-        self.index = index
+    def __init__(
+        self, text: str, book_name: str, chapter_num: int, verse_num: int, index: int
+    ):
+        self.text = text
+        self.verse_id = VerseId(book_name, chapter_num, verse_num, index)
 
     def __hash__(self):
         return hash(str(self))
 
     def __str__(self):
-        return f"{self.book_name}, {self.chapter_num}:{self.verse_num}"
-
-    def to_dict(self) -> dict:
-        return {
-            "book_name": self.book_name,
-            "chapter_num": self.chapter_num,
-            "verse_num": self.verse_num,
-            "index": self.index,
-        }
+        return f"{str(self.verse_id)}\t{self.text}"
 
     @staticmethod
-    def from_string(info: str, line_no: int) -> "Verse":
-        # Format: <Book> <chapter num>:<verse num>
-        book_and_chapter, verse_num = info.split(":")
+    def from_string(line: str, line_no: int) -> "Verse":
+        # Format: <Book> <chapter num>:<verse num>\t<text>
+        verse_id, full_verse = line.split("\t")
+        book_and_chapter, verse_num = verse_id.split(":")
         # Since some books (e.g. 1 Samuel) have a space in them, we need to
         # split and then rejoin all but the last element.
         book_and_chapter = book_and_chapter.split()
         book_name = " ".join(book_and_chapter[:-1])
         chapter_num = book_and_chapter[-1]
 
-        verse = Verse(book_name, int(chapter_num), int(verse_num), line_no)
+        verse = Verse(
+            full_verse.strip(), book_name, int(chapter_num), int(verse_num), line_no
+        )
         return verse
 
 
 class Word:
-    def __init__(self, word: str, verse_id: Verse):
+    def __init__(self, word: str, verse_id: VerseId):
         self.word: str = word
-        self.contained_in_verses: set[Verse] = {verse_id}
+        self.contained_in_verses: set[VerseId] = {verse_id}
         self.count: int = 1
 
-    def update(self, verse_id: Verse):
+    def update(self, verse_id: VerseId):
         self.contained_in_verses.add(verse_id)
         self.count += 1
-
-    def to_dict(self) -> dict:
-        return {
-            "word": self.word,
-            "contained_in_verses": [
-                verse.to_dict() for verse in self.contained_in_verses
-            ],
-        }
 
 
 class Bible:
     def __init__(self, bible_version: BIBLES):
         self.words: dict[str, Word] = {}
         self.bible_version = bible_version
-        self.verses: list[str] = []
+        self.verses: list[Verse] = []
 
         self.read_bible()
 
@@ -111,19 +117,18 @@ class Bible:
             f.readline()
             f.readline()
 
-            self.verses = f.readlines()
-            for line_no, line in enumerate(self.verses):
-                # One verse per line. The format is:
-                #   <Book> <chapter num>:<verse num>\t<text>
-                verse_id, full_verse = line.split("\t")
-                word_list = clean_line(full_verse)
-                verse_id = Verse.from_string(verse_id, line_no)
+            lines = f.readlines()
+            for line_no, line in enumerate(lines):
+                verse = Verse.from_string(line, line_no)
+                self.verses.append(verse)
+                word_list = clean_line(verse.text)
+
                 # Add or update the word.
                 for word in word_list:
                     if word in self.words:
-                        self.words[word].update(verse_id)
+                        self.words[word].update(verse.verse_id)
                     else:
-                        self.words[word] = Word(word, verse_id)
+                        self.words[word] = Word(word, verse.verse_id)
 
     def check_text_and_print(self, text: str) -> None:
         cleaned_text = clean_line(text)
@@ -181,13 +186,42 @@ def with_count_of(words: Counter, minimum: int, maximum: int) -> list:
     return word_list
 
 
+def convert_txt_to_js(txt_filepath, js_filepath):
+    with open(txt_filepath, "r", encoding="utf-8") as txt_file:
+        content = txt_file.read()
+
+    # Extract the base name (filename without extension)
+    base_name = os.path.splitext(os.path.basename(txt_filepath))[0]
+
+    # Write the JS file
+    with open(js_filepath, "w", encoding="utf-8") as js_file:
+        js_file.write(f"const {base_name} = `")
+        js_file.write(content)
+        js_file.write("`;\n")
+
+
+def convert_txt_to_javascript():
+    for path in [BIBLES_DIR, BIBLE_WEBSITE_DIR]:
+        if not os.path.exists(path):
+            print(f"Directory '{path}' does not exist.")
+            return
+
+    for filename in os.listdir(BIBLES_DIR):
+        if filename.endswith(".txt"):
+            txt_filepath = os.path.join(BIBLES_DIR, filename)
+            js_filename = f"{os.path.splitext(filename)[0]}.js"
+            js_filepath = os.path.join(BIBLE_WEBSITE_DIR, js_filename)
+            convert_txt_to_js(txt_filepath, js_filepath)
+
+
 def main():
-    bible = Bible(BIBLES.KJV)
+    # bible = Bible(BIBLES.KJV)
+    convert_txt_to_javascript()
 
     nfts = "Fox is making a blockchain animated series with Rick and Morty creator Dan Harmon to sell you NFTs"
-
-    r = bible.check_text("fox dan morty")
-    print(json.dumps(r.to_dict(), indent=2))
+    #
+    # r = bible.check_text("fox dan morty")
+    # print(json.dumps(r.to_dict(), indent=2))
     # bible.check_text_and_print(nfts)
     # with open("timecube.txt") as f:
     #     time = f.read()

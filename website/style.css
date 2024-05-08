@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    width: 100%;
+}
+
+#inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 100%;
+}
+
+#results, #another {
+    width: 100%;
+
+}
+
+textarea {
+    width: 100%;
+    resize: vertical;
+}
+
+a {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/*
+By default, setting the hidden property does nothing
+if the element is styled to use  flexbox.
+*/
+[hidden] {
+    display: none !important;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Input Example</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div id="page">
+    <div id="inputContainer">
+        <textarea id="textbox"></textarea>
+        <button onclick="submitButtonClicked()">Submit</button>
+    </div>
+
+    <div id="resultsContainer" hidden="hidden">
+        <div id="words">
+            <div>
+                <h2>Words Not In Bible</h2>
+                <ul id="wordsNotInBible"></ul>
+            </div>
+            <h2>Words In Bible</h2>
+            <p>Click words to see verses</p>
+            <div id="wordsInBible"></div>
+        </div>
+        <a id="another" onclick="resetInput()">enter another phrase</a>
+    </div>
+    <script src="bibles/kjv.js"></script>
+    <script src="parse_bible.js"></script>
+
+    <script src="controller.js"></script>
+</div>
+</body>
+</html>
