@@ -14,8 +14,8 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          target-folder: NoneOfTheseWordsAreInTheBible
-          repository-name: CrispinStichart/CrispinStichart.github.io
+#          target-folder: NoneOfTheseWordsAreInTheBible
+#          repository-name: CrispinStichart/CrispinStichart.github.io
           folder: website # The folder the action should deploy.
-          token: ${{ secrets.DEPLOY_KEY }}
+#          token: ${{ secrets.DEPLOY_KEY }}
 
