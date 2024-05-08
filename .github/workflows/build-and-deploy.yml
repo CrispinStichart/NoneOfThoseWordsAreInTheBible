@@ -4,6 +4,7 @@ permissions:
   contents: write
 jobs:
   build-and-deploy:
+    environment: build-and-deploy
     concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
     steps:
@@ -16,6 +17,5 @@ jobs:
           target-folder: NoneOfTheseWordsAreInTheBible
           repository-name: CrispinStichart/CrispinStichart.github.io
           folder: . # The folder the action should deploy.
-        secrets:
           token: ${{ secrets.DEPLOY_KEY }}
 
