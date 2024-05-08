@@ -18,5 +18,5 @@ jobs:
         with:
           target-folder: NoneOfTheseWordsAreInTheBible
           repository-name: CrispinStichart/CrispinStichart.github.io
-          token: somekey
+          token: ${{ secrets.TEST }}
           folder: . # The folder the action should deploy.
