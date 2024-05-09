@@ -4,6 +4,10 @@ html {
 
 }
 
+#margin {
+    margin: .5em;
+}
+
 #page {
     margin-inline: auto;
     max-width: 45em;
@@ -14,6 +18,12 @@ html {
     flex-direction: column;
     align-items: flex-end;
     width: 100%;
+
+    margin-top: 5px;
+}
+
+#inputContainer .btn {
+    margin-top: 5px;
 }
 
 textarea {
@@ -22,10 +32,10 @@ textarea {
     min-height: 10em;
 }
 
-#inputContainer {
-    margin-inline: auto;
-    margin-top: 5px;
-}
+
+/*#wordsInBible li {*/
+/*    list-style-type: "🠺";*/
+/*}*/
 
 .clickable {
     cursor: pointer;
