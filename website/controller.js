@@ -1,3 +1,5 @@
+"use strict";
+
 let bible = new Bible(kjv)
 
 function submitButtonClicked() {
@@ -38,11 +40,6 @@ function checkText(text) {
         li.appendChild(text);
         wordsNotInBibleList.appendChild(li)
     });
-    // console.log("In Bible:")
-    // console.log(in_bible)
-    //
-    // console.log("Not In Bible:")
-    // console.log(not_in_bible)
 }
 
 function displayWords(words) {
@@ -51,13 +48,15 @@ function displayWords(words) {
 
     words.forEach(word => {
         const listItem = document.createElement('li');
-        listItem.textContent = `"${word.word}" appears in ${word.containedInVerses.size} verses`;
-
+        const text = document.createElement('span');
+        text.classList.add("clickable");
+        text.textContent = `"${word.word}" appears in ${word.containedInVerses.size} verses`;
+        listItem.appendChild(text);
         // Click event to toggle display of verses
-        listItem.addEventListener('click', function () {
+        text.addEventListener('click', function () {
             // Check if the details are already displayed
-            if (this.childNodes.length > 1) {
-                this.removeChild(this.lastChild);  // Toggle off, remove the sublist
+            if (listItem.childNodes.length > 1) {
+                listItem.removeChild(listItem.lastChild);  // Toggle off, remove the sublist
             } else {
                 // Create a nested list to show verses
                 const verseList = document.createElement('ul');
@@ -75,7 +74,7 @@ function displayWords(words) {
                     verseList.appendChild(verseItem);
                 });
 
-                this.appendChild(verseList);  // Append the sublist to the list item
+                listItem.appendChild(verseList);  // Append the sublist to the list item
             }
         });
 

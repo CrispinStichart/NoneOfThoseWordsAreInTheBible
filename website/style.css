@@ -1,16 +1,12 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    display: flex;
-    justify-content: center;
+html {
+    scrollbar-gutter: stable;
+    /*overflow: auto;*/
+
 }
 
 #page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    max-width: 600px;
-    width: 100%;
+    margin-inline: auto;
+    max-width: 45em;
 }
 
 #inputContainer {
@@ -20,31 +16,49 @@ body {
     width: 100%;
 }
 
-#results, #another {
-    width: 100%;
-
-}
-
-#wordsInBible em {
-    padding-right: 1em;
-}
-
 textarea {
     width: 100%;
     resize: vertical;
     min-height: 10em;
 }
 
-a {
-    color: blue;
-    cursor: pointer;
-    text-decoration: underline;
+#inputContainer {
+    margin-inline: auto;
+    margin-top: 5px;
 }
 
-/*
-By default, setting the hidden property does nothing
-if the element is styled to use  flexbox.
-*/
-[hidden] {
-    display: none !important;
+.clickable {
+    cursor: pointer;
 }
+
+#another {
+    padding-left: 0;
+}
+
+#wordsInBible em {
+    padding-right: 1em;
+}
+
+/*#results, #another {*/
+/*    width: 100%;*/
+
+/*}*/
+
+/*#wordsInBible em {*/
+/*    padding-right: 1em;*/
+/*}*/
+
+
+/*a {*/
+/*    color: blue;*/
+/*    cursor: pointer;*/
+/*    text-decoration: underline;*/
+/*}*/
+
+/*!**/
+/*By default, setting the hidden property does nothing*/
+/*if the element is styled to use  flexbox.*/
+/**!*/
+/*[hidden] {*/
+/*    display: none !important;*/
+/*}*/
