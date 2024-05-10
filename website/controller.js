@@ -32,7 +32,6 @@ function checkText(text) {
     });
 
     displayWords(in_bible)
-
     let wordsNotInBibleList = document.getElementById("wordsNotInBible")
     not_in_bible.forEach((word) => {
         let li = document.createElement("li");
@@ -40,6 +39,12 @@ function checkText(text) {
         li.appendChild(text);
         wordsNotInBibleList.appendChild(li)
     });
+
+    document.getElementById("allWordsInBible").hidden = not_in_bible.length !== 0
+    document.getElementById("clickWordsMsg").hidden = in_bible.length === 0
+    document.getElementById("noWordsInBible").hidden = in_bible.length !== 0
+
+
 }
 
 function displayWords(words) {
