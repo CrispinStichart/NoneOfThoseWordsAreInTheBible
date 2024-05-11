@@ -98,5 +98,5 @@ function displayWords(words) {
  */
 function highlightWord(text, word) {
     const regex = new RegExp(`\\b${word}\\b`, 'gi'); // Case-insensitive, whole word match
-    return text.replace(regex, `<strong>${word}</strong>`);
+    return text.replace(regex, match => `<strong>${match}</strong>`);
 }
