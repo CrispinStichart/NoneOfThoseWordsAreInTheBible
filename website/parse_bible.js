@@ -148,7 +148,7 @@ function extract_unique_words(line) {
     const words = line.split(/\s+/); // Split by whitespace
 
     for (const word of words) {
-        const cleanedWord = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+        const cleanedWord = word.replace(/[^a-zA-Z-]/g, "").toLowerCase();
         if (cleanedWord) {
             uniqueWords.add(cleanedWord);
         }
