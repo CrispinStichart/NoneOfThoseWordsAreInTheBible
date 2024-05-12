@@ -67,16 +67,7 @@ function displayWords(words) {
                 const verseList = document.createElement('ul');
 
                 word.containedInVerses.forEach(verseId => {
-                    const verseItem = document.createElement('li');
-                    const verse = bible.verses[verseId.index]; // Access the verse using index
-                    const verseIdElement = document.createElement("em")
-                    const verseTextElement = document.createElement("span")
-                    verseIdElement.textContent = verseId.toString();
-                    verseTextElement.innerHTML = highlightWord(verse.text, word.word);
-                    verseItem.appendChild(verseIdElement);
-                    verseItem.appendChild(verseTextElement);
-
-                    verseList.appendChild(verseItem);
+                    verseList.appendChild(createVerseListItem(verseId, word));
                 });
 
                 listItem.appendChild(verseList);  // Append the sublist to the list item
@@ -87,6 +78,20 @@ function displayWords(words) {
     });
 
     resultsDiv.appendChild(list);
+}
+
+function createVerseListItem(verseId, word) {
+    const verseItem = document.createElement('li');
+    const verse = bible.verses[verseId.index]; // Access the verse using index
+    const verseIdElement = document.createElement("em")
+    const verseTextElement = document.createElement("span")
+
+    verseIdElement.textContent = verseId.toString();
+    verseTextElement.innerHTML = highlightWord(verse.text, word.word);
+    verseItem.appendChild(verseIdElement);
+    verseItem.appendChild(verseTextElement);
+
+    return verseItem
 }
 
 /**
