@@ -44,6 +44,10 @@ textarea {
     cursor: pointer;
 }
 
+.clickable:hover {
+    text-decoration: underline;
+}
+
 #another {
     padding-left: 0;
 }
