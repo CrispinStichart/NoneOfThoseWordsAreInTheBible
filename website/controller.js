@@ -44,6 +44,10 @@ function checkText(text) {
     document.getElementById("clickWordsMsg").hidden = in_bible.length === 0
     document.getElementById("noWordsInBible").hidden = in_bible.length !== 0
 
+    let percentage = in_bible.length / words.size * 100;
+
+    document.getElementById("summary").appendChild(
+        document.createTextNode(`${percentage}% of those words were in the bible.`))
 
 }
 
