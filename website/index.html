@@ -11,8 +11,9 @@
 
 </head>
 <body>
-<div id="margin">
-    <div id="page">
+<div class="margin">
+    <div id="loading" class="page loading">Loading...</div>
+    <div id="content" class="page" hidden="hidden">
 
         <h1>None of those words are in the Bible... or <em>are</em> they?</h1>
         <p>For context, see <a href="https://knowyourmeme.com/memes/none-of-these-words-are-in-the-bible">this Know Your
@@ -21,12 +22,18 @@
         <textarea
                 placeholder="For example: Fox is making a blockchain animated series with Rick and Morty creator Dan Harmon to sell you NFTs"
                 id="textbox"></textarea>
-            <button class="btn btn-primary" onclick="submitButtonClicked()">Check Text</button>
+            <button id="checkTextButton" class="btn btn-primary" onclick="submitButtonClicked()">Check Text</button>
         </div>
 
         <div id="resultsContainer" hidden="hidden">
             <div id="words">
                 <a id="another" class="btn btn-link" onclick="resetInput()">enter another phrase</a>
+
+                <div>
+                    <label for="versionSelect">Version</label>
+                    <select name="versions" id="versionSelect">
+                    </select>
+                </div>
 
                 <div>
                     <h2>Words Not In Bible</h2>
@@ -43,6 +50,8 @@
             </div>
         </div>
         <script src="bibles/kjv.js"></script>
+        <script src="bibles/erv.js"></script>
+
         <script src="parse_bible.js"></script>
 
         <script src="controller.js"></script>

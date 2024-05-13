@@ -189,15 +189,24 @@ def with_count_of(words: Counter, minimum: int, maximum: int) -> list:
 def convert_txt_to_js(txt_filepath, js_filepath):
     with open(txt_filepath, "r", encoding="utf-8") as txt_file:
         content = txt_file.read()
+        txt_file.seek(0)
+        txt_file.readline()
+        version_name = txt_file.readline().strip()
+
+    # Clean up the version name; at least the KJV has attribution after the name.
+    index = version_name.find(":")
+    if index > 0:
+        version_name = version_name[:index]
 
     # Extract the base name (filename without extension)
     base_name = os.path.splitext(os.path.basename(txt_filepath))[0]
 
     # Write the JS file
     with open(js_filepath, "w", encoding="utf-8") as js_file:
-        js_file.write(f"const {base_name} = `")
+        js_file.write(f"const {base_name} = {{version : '{version_name}',\n")
+        js_file.write("text : `")
         js_file.write(content)
-        js_file.write("`;\n")
+        js_file.write("`,\n};\n")
 
 
 def convert_txt_to_javascript():

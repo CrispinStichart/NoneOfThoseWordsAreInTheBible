@@ -4,11 +4,11 @@ html {
 
 }
 
-#margin {
+.margin {
     margin: .5em;
 }
 
-#page {
+.page {
     margin-inline: auto;
     max-width: 45em;
 }

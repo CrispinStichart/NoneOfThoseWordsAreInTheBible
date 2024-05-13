@@ -1,6 +1,37 @@
 "use strict";
 
-let bible = new Bible(kjv)
+let bibles = {};
+
+let loadingPromise = new Promise((resolve, reject) => {
+    [kjv, erv].forEach(bible => {
+        bibles[bible.version] = new Bible(bible.text);
+        let select = document.getElementById("versionSelect");
+        let option = document.createElement("option")
+        option.label = bible.version
+        option.value = bible.version
+        select.appendChild(option)
+    });
+    resolve()
+});
+
+loadingPromise.then(() => {
+    document.getElementById("loading").hidden = true;
+    document.getElementById("content").hidden = false;
+})
+
+
+let bible = bibles["English Revised Version"]
+
+let text = "";
+
+let select = document.getElementById("versionSelect")
+select.onchange = (event) => {
+    bible = bibles[select.value];
+    document.getElementById("wordsNotInBible").innerHTML = "";
+    document.getElementById("wordsInBible").innerHTML = "";
+    checkText(text)
+
+}
 
 function submitButtonClicked() {
     let text = document.getElementById("textbox").value;
@@ -19,7 +50,8 @@ function resetInput() {
 
 }
 
-function checkText(text) {
+function checkText(_text) {
+    text = _text
     let words = extract_unique_words(text);
     let in_bible = []
     let not_in_bible = []
@@ -109,3 +141,4 @@ function highlightWord(text, word) {
     const regex = new RegExp(`\\b${word}\\b`, 'gi'); // Case-insensitive, whole word match
     return text.replace(regex, match => `<strong>${match}</strong>`);
 }
+
