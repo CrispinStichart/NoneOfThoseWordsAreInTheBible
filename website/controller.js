@@ -78,8 +78,7 @@ function checkText(_text) {
 
     let percentage = in_bible.length / words.size * 100;
 
-    document.getElementById("summary").appendChild(
-        document.createTextNode(`${percentage}% of those words were in the bible.`))
+    document.getElementById("summary").innerHTML = `${percentage}% of those words were in the bible.`
 
 }
 
